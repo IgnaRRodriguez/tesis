@@ -26,26 +26,7 @@ def addProtein(node:Node,protein:str,family:str,totalNodes:dict):
 			currentNode.families.add(family)
 			totalNodes[family] += 1
 
-def getDistanceFamily(trie:Node,family1:str,family2:str,totalNodes:dict):
-	nextTries = deque()
-	diff = 0
-	for nexts in filter(None,trie.nexts):
-		if ((family1 in nexts.families) or (family2 in nexts.families)):
-			nextTries.append(nexts)
-
-	while nextTries:
-		nextTrie = nextTries.popleft()
-		if ((family1 in nextTrie.families) and (family2 in nextTrie.families)):
-			diff += (1- (len({family1,family2})/len(nextTrie.families)))
-		else:
-			diff += 1
-		for nexts in filter(None,nextTrie.nexts):
-			if ((family1 in nexts.families) or (family2 in nexts.families)):
-				nextTries.append(nexts)
-	div = totalNodes[family1] + totalNodes[family2]
-	return diff/div	
-
-def getDistanceFamilyNew(trie:Node,family1:str,family2:str,totalNodes:dict):
+def getDistanceFamilyV1(trie:Node,family1:str,family2:str,totalNodes:dict):
 	nextTries = deque()
 	diff = 0
 	for nexts in filter(None,trie.nexts):
@@ -65,7 +46,7 @@ def getDistanceFamilyNew(trie:Node,family1:str,family2:str,totalNodes:dict):
 	div = totalNodes[family1] + totalNodes[family2]
 	return diff/div
 
-def getDistanceFamilyNew2(trie:Node,family1:str,family2:str,totalNodes:dict):
+def getDistanceFamilyV2(trie:Node,family1:str,family2:str,totalNodes:dict):
 	nextTries = deque()
 	diff = 0
 	for nexts in filter(None,trie.nexts):
@@ -150,7 +131,7 @@ for i in range(len(families)):
 	for j in range(i,len(families)):
 		family2 = families[j]
 		print(family2)
-		val = getDistanceFamilyNew2(trie,family1,family2,totalNodes)
+		val = getDistanceFamilyV2(trie,family1,family2,totalNodes)
 		print(val)
 		distances[i][j] = val
 		distances[j][i] = distances[i][j]
